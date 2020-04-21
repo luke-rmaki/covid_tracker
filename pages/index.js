@@ -1,12 +1,22 @@
-import fetch from "isomorphic-unfetch";
-
+import { useState } from "react";
+import useSWR from "swr";
+import fetcher from "../utils/fetcher";
 import Layout from "../components/layout/Layout";
 import MainHeading from "../components/typography/MainHeading";
-import MainDisplay from "../components/layout/MainDisplay";
-import DisplayHeading from "../components/typography/DisplayHeading";
 import MainData from "../components/data/MainData";
+import Loader from "../components/data/Loader";
 
-const Home = ({ data }) => {
+const Home = () => {
+  const { data, error } = useSWR(
+    "https://api.covid19api.com/summary",
+    fetcher,
+    {
+      refreshInterval: 1000,
+    }
+  );
+
+  if (error) return <Loader>Error</Loader>;
+
   return (
     <Layout>
       <MainHeading
@@ -16,15 +26,16 @@ const Home = ({ data }) => {
       >
         COVID-19 Tracker
       </MainHeading>
-      <MainData data={data} />
+
+      {data ? (
+        <MainData data={data} />
+      ) : (
+        <Loader initial={{ y: 100 }} animate={{ y: 0 }}>
+          Loading
+        </Loader>
+      )}
     </Layout>
   );
-};
-
-Home.getInitialProps = async (context) => {
-  const res = await fetch("https://api.covid19api.com/summary");
-  const data = await res.json();
-  return { data };
 };
 
 export default Home;
