@@ -5,9 +5,6 @@ const MainDisplay = styled(motion.div)`
   display: grid;
   grid-template-columns: repeat(12, 1fr);
 
-  div {
-    place-self: center;
-  }
   p {
     align-self: start;
   }
@@ -23,6 +20,22 @@ const MainDisplay = styled(motion.div)`
   h3:nth-child(3),
   p:nth-child(6) {
     grid-column: 9 / 13;
+  }
+
+  @media screen and (max-width: 500px) {
+    h3,
+    p {
+      grid-column: 1 / 13 !important;
+    }
+    p:nth-child(4) {
+      grid-row: 2;
+    }
+    p:nth-child(5) {
+      grid-row: 4;
+    }
+    p:nth-child(6) {
+      grid-row: 6;
+    }
   }
 `;
 
