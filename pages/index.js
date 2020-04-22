@@ -1,10 +1,11 @@
-import { useState } from "react";
 import useSWR from "swr";
 import fetcher from "../utils/fetcher";
 import Layout from "../components/layout/Layout";
 import MainHeading from "../components/typography/MainHeading";
 import MainData from "../components/data/MainData";
 import Loader from "../components/data/Loader";
+import Selector from "../components/data/Selector";
+import CountryData from "../components/data/CountryData";
 
 const Home = () => {
   const { data, error } = useSWR(
@@ -28,7 +29,10 @@ const Home = () => {
       </MainHeading>
 
       {data ? (
-        <MainData data={data} />
+        <>
+          <MainData data={data} />
+          <Selector data={data} />
+        </>
       ) : (
         <Loader initial={{ y: 100 }} animate={{ y: 0 }}>
           Loading
